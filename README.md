@@ -1,4 +1,3 @@
-# tracefoundry
 # TraceFoundry
 
 A collaborative security engineering lab connecting controlled ATT&CK simulations to endpoint telemetry, detection logic, repeatable tests, and reviewed evidence.
