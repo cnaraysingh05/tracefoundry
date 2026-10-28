@@ -6,7 +6,7 @@ This document records the host hardware, planned lab placement, and setup decisi
 
 ## Host inventory
 
-| Detail | Chris | Project partner |
+| Detail | Chris | Laura |
 |---|---|---|
 | Computer | MacBook Air (M1, `MacBookAir10,1`) | Lenovo ThinkPad (`21OS00XG00`) |
 | CPU | Apple M1 | AMD Ryzen AI 7 PRO 350 with Radeon 860M |
@@ -25,11 +25,11 @@ Do not include serial numbers, credentials, product keys, or personal account de
 | Component | Proposed host | Guest OS / architecture | Resources | Status |
 |---|---|---|---|---|
 | Development, Git, and documentation | Chris's Mac | Host macOS | Not applicable | Planned |
-| Windows detection endpoint | Partner's ThinkPad | Windows 11 Pro x86-64 VM | Proposed: 4 vCPU, 8 GiB RAM, 100 GiB dynamically allocated disk | Approved planning allocation; validate after installation |
-| Splunk collection and search | Partner's ThinkPad | Supported x86-64 Linux VM; exact distribution/version pending | Proposed: 4 vCPU, 12 GiB RAM, 120 GiB dynamically allocated disk | Approved planning allocation; verify selected Splunk release support |
-| Wazuh server, indexer, and dashboard | Partner's ThinkPad | Supported x86-64 Linux VM | Proposed: 4 vCPU, 8 GiB RAM, 100 GiB dynamically allocated disk | Later phase; run within measured host capacity after the three-detection baseline |
-| Linux monitoring endpoint | Partner's ThinkPad | Linux x86-64 VM; distribution/version pending | Proposed: 2 vCPU, 4 GiB RAM, 40 GiB dynamically allocated disk | Later phase |
-| Isolated analysis environment | Partner's ThinkPad | Windows x86-64 disposable VM | Resources pending; run separately from collector VMs when practical | Later phase; isolated from detection infrastructure |
+| Windows detection endpoint | Laura's ThinkPad | Windows 11 Pro x86-64 VM | Proposed: 4 vCPU, 8 GiB RAM, 100 GiB dynamically allocated disk | Proposed allocation; validate after installation |
+| Splunk collection and search | Laura's ThinkPad | Supported x86-64 Linux VM; exact distribution/version pending | Proposed: 4 vCPU, 12 GiB RAM, 120 GiB dynamically allocated disk | Proposed allocation; verify selected Splunk release support |
+| Wazuh server, indexer, and dashboard | Laura's ThinkPad | Supported x86-64 Linux VM | Proposed: 4 vCPU, 8 GiB RAM, 100 GiB dynamically allocated disk | Later phase; run within measured host capacity after the three-detection baseline |
+| Linux monitoring endpoint | Laura's ThinkPad | Linux x86-64 VM; distribution/version pending | Proposed: 2 vCPU, 4 GiB RAM, 40 GiB dynamically allocated disk | Later phase |
+| Isolated analysis environment | Laura's ThinkPad | Windows x86-64 disposable VM | Resources pending; run separately from collector VMs when practical | Later phase; isolated from detection infrastructure |
 
 VM hosting does not determine issue ownership. Both collaborators must be able to reproduce the agreed detection workflow through an authorized access method.
 
@@ -111,10 +111,10 @@ These entries are pending verification; this table does not indicate installatio
 
 | Responsibility | Lead | Reviewer |
 |---|---|---|
-| Environment and architecture record — DOC-01 / #11 | Chris | Project partner |
-| Windows VM — LAB-01 / #1 | Project partner | Chris |
-| Sysmon configuration — LAB-02 / #2 | Project partner | Chris |
-| Splunk installation — LAB-03 / #3 | Project partner | Chris |
-| Sysmon-to-Splunk ingestion — LAB-04 / #4 | Chris | Project partner |
+| Environment and architecture record — DOC-01 / #11 | Chris | Laura |
+| Windows VM — LAB-01 / #1 | Laura | Chris |
+| Sysmon configuration — LAB-02 / #2 | Laura | Chris |
+| Splunk installation — LAB-03 / #3 | Laura | Chris |
+| Sysmon-to-Splunk ingestion — LAB-04 / #4 | Chris | Laura |
 
 Assignments follow the proposed session split and should be confirmed together. Update this file when a deployment decision changes; mark an item verified only after its evidence has been reviewed.
