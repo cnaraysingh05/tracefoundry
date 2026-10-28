@@ -8,15 +8,15 @@ This document records the host hardware, planned lab placement, and setup decisi
 
 | Detail | Chris | Project partner |
 |---|---|---|
-| Computer | Mac; exact model pending | Lenovo ThinkPad; exact model pending |
-| CPU | Pending | AMD Ryzen 7; exact model pending |
-| CPU architecture | Pending | x86-64 |
-| Installed RAM | Pending | Pending |
-| Available disk space | Pending | Pending |
-| Host OS and version | macOS; version pending | Pending confirmation |
+| Computer | MacBook Air (M1, `MacBookAir10,1`) | Lenovo ThinkPad (`21OS00XG00`) |
+| CPU | Apple M1 | AMD Ryzen AI 7 PRO 350 with Radeon 860M |
+| CPU architecture | ARM64 | x86-64 |
+| Installed RAM | 8 GiB | 59,749,613,568 bytes (about 55.6 GiB usable) |
+| Available disk space | 11 GiB on the data volume at time of inventory | 850,728,255,488 bytes (about 792.3 GiB) on `C:` |
+| Host OS and version | macOS 26.6.2 | Windows 11 Pro, version 10.0.26200, 64-bit |
 | Virtualization software and version | Pending | VMware previously reported; installation after reset and exact product/version pending |
 | Starting condition | Personal development workstation | Reported factory-reset machine |
-| Virtualization readiness | Pending | Firmware virtualization status pending |
+| Virtualization readiness | No virtualization app detected; insufficient current free space for the planned lab | Firmware virtualization enabled |
 
 Do not include serial numbers, credentials, product keys, or personal account details in this document.
 
@@ -25,11 +25,11 @@ Do not include serial numbers, credentials, product keys, or personal account de
 | Component | Proposed host | Guest OS / architecture | Resources | Status |
 |---|---|---|---|---|
 | Development, Git, and documentation | Chris's Mac | Host macOS | Not applicable | Planned |
-| Windows detection endpoint | Partner's ThinkPad | Windows 11 x86-64; edition/build pending | CPU, RAM, and disk pending | Proposed; capacity and compatibility review required |
-| Splunk collection and search | Pending | Supported OS and architecture for selected release | Pending | Deployment choice pending |
-| Wazuh server, indexer, and dashboard | Pending | Supported Linux release and architecture | Pending | Later phase; after three-detection baseline |
-| Linux monitoring endpoint | Pending | Linux distribution/version pending | Pending | Later phase |
-| Isolated analysis environment | Pending | Selected for analysis tools and sample architecture | Pending | Later phase; separate from detection infrastructure |
+| Windows detection endpoint | Partner's ThinkPad | Windows 11 Pro x86-64 VM | Proposed: 4 vCPU, 8 GiB RAM, 100 GiB dynamically allocated disk | Approved planning allocation; validate after installation |
+| Splunk collection and search | Partner's ThinkPad | Supported x86-64 Linux VM; exact distribution/version pending | Proposed: 4 vCPU, 12 GiB RAM, 120 GiB dynamically allocated disk | Approved planning allocation; verify selected Splunk release support |
+| Wazuh server, indexer, and dashboard | Partner's ThinkPad | Supported x86-64 Linux VM | Proposed: 4 vCPU, 8 GiB RAM, 100 GiB dynamically allocated disk | Later phase; run within measured host capacity after the three-detection baseline |
+| Linux monitoring endpoint | Partner's ThinkPad | Linux x86-64 VM; distribution/version pending | Proposed: 2 vCPU, 4 GiB RAM, 40 GiB dynamically allocated disk | Later phase |
+| Isolated analysis environment | Partner's ThinkPad | Windows x86-64 disposable VM | Resources pending; run separately from collector VMs when practical | Later phase; isolated from detection infrastructure |
 
 VM hosting does not determine issue ownership. Both collaborators must be able to reproduce the agreed detection workflow through an authorized access method.
 
@@ -46,9 +46,9 @@ The first telemetry gate is passed only when both collaborators can find a fresh
 
 ## Compatibility and resource decisions
 
-- Confirm the Mac's CPU architecture before choosing guest images. If it uses Apple silicon, verify Windows ARM drivers and tool support separately from application emulation.
+- Chris's M1 Mac is reserved for development, Git, documentation, and browser-based access. Its 8 GiB RAM and 11 GiB available storage do not support the planned local VM lab.
 - Verify the selected Splunk release supports its actual host OS and CPU. Use a separate supported host if needed.
-- Confirm the ThinkPad's available resources before assigning multiple simultaneous VMs.
+- The ThinkPad has sufficient preliminary capacity for the Windows endpoint and a separate Splunk VM. Proposed allocations remain subject to observed host and guest performance.
 - Record actual VM allocations, event retention, and disk limits after the deployment choices are made.
 - Record licensing or evaluation terms and expiration dates without committing keys or credentials.
 - Confirm snapshot support in the selected virtualization product and test recovery before simulations.
@@ -97,7 +97,8 @@ These entries are pending verification; this table does not indicate installatio
 
 ## Session checklist
 
-- [ ] Confirm host specifications and VMware installation.
+- [x] Confirm host specifications and firmware virtualization support.
+- [ ] Confirm VMware installation and version.
 - [ ] Agree on VM allocations and Splunk placement.
 - [ ] Document network mode and authorized access.
 - [ ] Create Windows VM and verify clean-snapshot recovery.
