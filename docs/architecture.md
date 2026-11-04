@@ -1,6 +1,6 @@
 # TraceFoundry lab architecture
 
-**Status:** Proposed design, pending deployment verification  
+**Status:** Windows endpoint running. Sysmon collection and Splunk ingestion are planned.
 **Owner:** Chris  
 **Reviewer:** Laura
 
@@ -12,7 +12,7 @@ The first milestone is to follow one Windows process from execution on the endpo
 
 ```mermaid
 flowchart TD
-    W["Windows 11 test VM"] --> S["Sysmon Operational log"]
+    W["Windows Server 2022 test VM"] --> S["Sysmon Operational log"]
     S --> F["Windows forwarder"]
     F --> P["Splunk on a Linux VM"]
     M["Chris's Mac"] -. planned private search access .-> P
@@ -22,16 +22,16 @@ flowchart TD
 
 | Component | Planned role | What still needs verification |
 |---|---|---|
-| Windows 11 VM on Laura’s ThinkPad | Run controlled simulations and record process activity in `Microsoft-Windows-Sysmon/Operational` | Actual hostname, guest build, Sysmon configuration, and clean snapshot restore |
+| Windows Server 2022 VM on Laura’s ThinkPad | Run controlled simulations and record process activity in `Microsoft-Windows-Sysmon/Operational` | Guest hostname, exact OS build, and Sysmon configuration |
 | Splunk Linux VM on Laura’s ThinkPad | Receive Windows events, index them, and run SPL searches | Linux and Splunk versions, forwarding configuration, index, sourcetype, and timestamp handling |
 | Chris’s Mac | Maintain the repository and reproduce Splunk searches | Private access method and successful login from the Mac |
 | Wazuh and Linux test VMs | Compare Windows detection results and test file-integrity monitoring on Windows and Linux | Agent enrollment, collection settings, and paired test results in the later Wazuh phase |
 
 ## Network and recovery
 
-NAT is proposed for Windows setup and updates. Chris and Laura will record the actual VMware network mode, the route from the Windows endpoint to Splunk, and the private access method from Chris’s Mac. The collector and dashboard interfaces will be restricted to authorized lab access.
+The Windows Server 2022 guest uses VMware NAT. The route to Splunk and private access from the Mac are pending verification. Collector and dashboard access will be restricted to authorized lab users.
 
-Laura will take a clean Windows snapshot before installing telemetry tools and test that the VM can revert to it. The environment record will identify the snapshot and the observed restore result.
+Laura created the `LAB-01 Clean Baseline` snapshot and reports a successful restore. Chris still needs to review the recovery result.
 
 ## Isolated analysis environment
 
