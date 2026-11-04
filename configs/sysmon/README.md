@@ -133,7 +133,7 @@ Command:
 Get-FileHash .\sysmonconfiguration.xml -Algorithm SHA256
 ```
 
-SHA-256 Hash: PENDING
+SHA-256 Hash: F4CC54128674A5844B23E6B602253F3EC36232F2AC3D8457CCF4F52E25CAC3B3
 
 The recorded hash must match the exact XML committed
 to this repository.
