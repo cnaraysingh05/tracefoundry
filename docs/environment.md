@@ -125,7 +125,7 @@ Laura booted Windows Server 2022 Standard Evaluation (64-bit) in VMware.
 The guest reported 2 logical processors and approximately 2 GiB of RAM.
 Its C: volume reported 79.37 GB total and 67.51 GB free.
 
-The architecture draft specifies Windows 11 as the planned detection endpoint.
-Chris and Laura still need to confirm the final guest OS and verify snapshot recovery.
+Chris and Laura selected this Windows Server 2022 VM as the detection endpoint.
+Laura reports a successful restore from the LAB-01 Clean Baseline snapshot.
 
 [Guest inventory screenshot](screenshots/windows-server-2022-inventory.png)
