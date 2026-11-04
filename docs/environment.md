@@ -118,3 +118,14 @@ These entries are pending verification; this table does not indicate installatio
 | Sysmon-to-Splunk ingestion — LAB-04 / #4 | Chris | Laura |
 
 Assignments follow the proposed session split and should be confirmed together. Update this file when a deployment decision changes; mark an item verified only after its evidence has been reviewed.
+
+## Observed Windows guest
+
+Laura booted Windows Server 2022 Standard Evaluation (64-bit) in VMware.
+The guest reported 2 logical processors and approximately 2 GiB of RAM.
+Its C: volume reported 79.37 GB total and 67.51 GB free.
+
+The architecture draft specifies Windows 11 as the planned detection endpoint.
+Chris and Laura still need to confirm the final guest OS and verify snapshot recovery.
+
+[Guest inventory screenshot](screenshots/windows-server-2022-inventory.png)
