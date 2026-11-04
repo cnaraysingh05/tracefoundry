@@ -118,7 +118,7 @@ Expected result:
 
 Sysmon Event ID 1 records Notepad process creation.
 
-Actual Event ID 1 result: Pending documented evidence
+Actual Event ID 1 result: Passed — Notepad process creation observed in Sysmon Operational log.
 
 Additional Event ID 3, 11, and 12-14 verification:
 Pending.
