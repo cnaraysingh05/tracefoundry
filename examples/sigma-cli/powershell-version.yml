@@ -1,0 +1,16 @@
+title: PowerShell Version Query Used in TraceFoundry Lab
+id: 91f619f6-0bcf-49b0-b173-29a7143ed674
+status: experimental
+description: Matches a benign PowerShell version query to exercise Sigma-to-SPL conversion.
+author: Christopher Naraysingh
+logsource:
+    category: process_creation
+    product: windows
+detection:
+    selection:
+        Image|endswith: '\powershell.exe'
+        CommandLine|contains: '$PSVersionTable'
+    condition: selection
+falsepositives:
+    - Routine administrator version checks
+level: informational
