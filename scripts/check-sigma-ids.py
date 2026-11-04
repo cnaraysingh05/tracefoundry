@@ -22,6 +22,11 @@ for path in paths:
     except (KeyError, ValueError, yaml.YAMLError) as error:
         raise SystemExit(f"FAIL: {name}: invalid rule or missing UUID: {error}")
 
+    if name.parts[0] == "detections":
+        author = rule.get("author")
+        if not isinstance(author, str) or not author.strip():
+            raise SystemExit(f"FAIL: {name}: author must be a nonempty string")
+
     if rule_id in seen:
         raise SystemExit(f"FAIL: duplicate Sigma ID {rule_id}: {seen[rule_id]} and {name}")
     seen[rule_id] = name
