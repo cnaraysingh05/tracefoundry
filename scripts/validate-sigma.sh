@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 set -eu
 cd "$(dirname "$0")/.."
+python3 scripts/check-sigma-ids.py
 example="examples/sigma-cli/powershell-version"
 actual="$(mktemp)"
 trap 'rm -f "$actual"' EXIT
