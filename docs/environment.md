@@ -1,399 +1,133 @@
+# TraceFoundry Environment
 
-# TraceFoundry Lab Environment
+Status: The Windows detection VM is running. Laura tested clean-snapshot recovery. Chris reviewed LAB-01 in issue #1. Telemetry verification is pending.
 
-## LAB-01: Windows Detection Endpoint
+This document records the host hardware, planned lab placement, and setup decisions for TraceFoundry. Pending entries must be confirmed before installation. Planning allocations are not vendor requirements or verified capacity.
 
-### 1. Environment Overview
+## Host inventory
 
-TraceFoundry is a collaborative detection engineering lab designed to connect controlled endpoint behavior to security telemetry, detection logic, testing, and documented evidence.
-
-The initial detection endpoint is a disposable Windows Server 2022 virtual machine hosted on a Lenovo ThinkPad using VMware Workstation Pro.
-
-This environment is intended to support Windows endpoint monitoring, Sysmon telemetry collection, Splunk ingestion, Atomic Red Team simulations, and Wazuh agent integration.
-
-The malware analysis environment will be deployed separately with stricter isolation controls.
-
-**Environment Status:** In Progress  
-**Related Issue:** LAB-01 (#1)  
-**Partner Review:** Pending
-
----
-
-### 2. Host Computer
-
-| Component | Configuration |
-|---|---|
-| Manufacturer | Lenovo |
-| Device | ThinkPad |
-| Host Operating System | Windows 11 (edition/build pending verification) |
-| Processor | AMD Ryzen AI 7 PRO 350 |
-| Integrated Graphics | AMD Radeon 860M |
-| CPU Architecture | x86-64 (AMD64) |
-| Physical CPU Cores | 8 |
-| Logical Processors | 16 |
-| CPU Base Speed | 2.00 GHz |
-| Hardware Virtualization | Enabled |
-| Installed RAM | Pending verification |
-| Usable Memory Reported by Task Manager | 55.6 GB |
-| Storage Type | NVMe SSD |
-| Total Storage Capacity | Pending verification |
-| Available Storage | Pending verification |
-
-The host uses an AMD x86-64 processor with hardware virtualization enabled.
-
-Windows ARM compatibility considerations do not apply to the selected host architecture.
-
-Additional resource allocation decisions will be based on measured host utilization.
-
----
-
-### 3. Virtualization Platform
-
-| Component | Configuration |
-|---|---|
-| Hypervisor | VMware Workstation Pro |
-| Version | 17.6.3 |
-| Host Platform | Windows |
-| Licensing | Free-use distribution |
-| Snapshot Capability | Supported and tested |
-| Virtual Networking | Supported |
-| VMware Tools | Installed in guest |
-
-VMware Workstation Pro is used to create and manage the project's disposable virtual machines.
-
-Virtualization provides a controlled testing environment, although additional network and host-integration restrictions are required for higher-risk analysis activities.
-
----
-
-### 4. Windows Detection Endpoint
-
-| Component | Configuration |
-|---|---|
-| Virtual Machine Name | Windows Server 2022 |
-| Guest Operating System | Windows Server 2022 Standard Evaluation |
-| Installation Type | Desktop Experience |
-| Guest Architecture | x64 |
-| Virtual CPUs | 2 |
-| Allocated RAM | 8 GB (8192 MB) |
-| Virtual Disk Capacity | 80 GB |
-| Virtual Disk Interface | NVMe |
-| Network Adapter Mode | NAT |
-| IP Assignment | DHCP |
-| PowerShell Version | 5.1.20348.558 |
-| VMware Tools | Installed |
-| VM Status | Operational |
-| Snapshot Recovery | Passed |
-
-Windows Server 2022 was selected as the initial Windows detection endpoint.
-
-The TraceFoundry framework requires a Windows environment capable of supporting endpoint telemetry, security simulations, and detection validation. It does not mandate Windows 11 specifically.
-
-The selected Windows Server endpoint will be retained unless compatibility or performance testing identifies a reason to change the operating system.
-
----
-
-### 5. Operating System Licensing
-
-#### Windows Server 2022
-
-- Edition: Windows Server 2022 Standard Evaluation
-- Licensing Type: Time-limited evaluation
-- Activation Expiration: April 25, 2027
-- Expiration Time: 5:04:45 PM
-- Verification Command: `slmgr /xpr`
-- Verification Status: Confirmed
-
-The Windows Server evaluation license is intended for testing and evaluation, not production use.
-
-The evaluation expiration must be considered when scheduling project milestones and maintaining lab reproducibility.
-
-#### VMware Workstation Pro
-
-- Product: VMware Workstation Pro
-- Version: 17.6.3
-- Licensing: Free-use distribution
-- Installation Status: Installed and operational
-
----
-
-### 6. Network Configuration
-
-#### Virtual Network Settings
-
-| Setting | Configuration |
-|---|---|
-| VMware Network Mode | NAT |
-| Guest Network Adapter | Intel(R) 82574L Gigabit Network Connection |
-| IP Address Assignment | DHCP |
-| IPv4 Address Type | Private |
-| Network Routing | VMware NAT |
-| Bridged Networking | Not configured |
-| Network Isolation | Separate malware-analysis sandbox planned |
-
-The Windows detection endpoint currently uses VMware NAT networking.
-
-NAT provides network access through the host's virtual network configuration without directly bridging the virtual machine to the physical network.
-
-NAT is not equivalent to complete network isolation.
-
-#### Network Verification
-
-The following command was executed inside Windows Server:
-
-`ipconfig /all`
-
-Observed results:
-
-- Hostname: Windows Server VM (machine-specific name omitted)
-- Ethernet adapter: Ethernet0
-- DHCP Enabled: Yes
-- IPv4 address assigned successfully
-- Private IPv4 subnet in use
-- Default gateway configured
-- DNS server configured
-- IP Routing Enabled: No
-
-The VM's full IP configuration and hardware identifiers are excluded from public documentation.
-
-#### Network Safety Requirements
-
-The Windows detection lab and malware-analysis lab will remain separate.
-
-Dynamic malware analysis requires:
-
-- No internet egress
-- No bridged networking
-- No shared folders
-- No clipboard or drag-and-drop sharing
-- No USB passthrough
-- No mounted host drives
-- No cloud synchronization
-
-Any internal virtual network used during malware analysis must be restricted to authorized disposable analysis peers or simulated network services.
-
----
-
-### 7. Tool Compatibility
-
-The Windows detection endpoint uses Windows Server 2022 x64.
-
-Compatibility assessments are based on documented platform support. Tool versions, selected configurations, and successful integration will be verified during their respective implementation phases.
-
-| Tool | Compatibility Assessment | Installation Status |
+| Detail | Chris | Laura |
 |---|---|---|
-| Windows PowerShell 5.1 | Confirmed working | Installed |
-| Microsoft Sysmon | Windows platform supported; configuration testing pending | Not installed |
-| Splunk Universal Forwarder | Windows Server 2022 x64 supported | Not installed |
-| Splunk Enterprise | Windows Server 2022 x64 supported; deployment host and sizing TBD | Not installed |
-| Atomic Red Team | Windows supported; individual test prerequisites require review | Not installed |
-| Wazuh Agent | Windows Server 2022 supported | Not installed |
-| Git | Windows compatible; selected version TBD | Not verified |
-| Sigma CLI | Version and execution environment TBD | Not installed |
+| Computer | MacBook Air (M1, `MacBookAir10,1`) | Lenovo ThinkPad (`21OS00XG00`) |
+| CPU | Apple M1 | AMD Ryzen AI 7 PRO 350 with Radeon 860M |
+| CPU architecture | ARM64 | x86-64 |
+| Installed RAM | 8 GiB | 59,749,613,568 bytes (about 55.6 GiB usable) |
+| Available disk space | 11 GiB on the data volume at time of inventory | 850,728,255,488 bytes (about 792.3 GiB) on `C:` |
+| Host OS and version | macOS 26.6.2 | Windows 11 Pro, version 10.0.26200, 64-bit |
+| Virtualization software and version | No virtualization app found in the checked location | VMware Workstation Pro 17.6.3 |
+| Starting condition | Personal development workstation | Reported factory-reset machine |
+| Virtualization readiness | No virtualization app detected; insufficient current free space for the planned lab | Firmware virtualization enabled |
 
-#### Compatibility Notes
+Do not include serial numbers, credentials, product keys, or personal account details in this document.
 
-- The endpoint uses AMD64/x64 architecture.
-- Windows ARM driver compatibility does not apply to this VM.
-- Sysmon configuration and event generation will be validated during LAB-02.
-- Splunk installation and deployment decisions belong to LAB-03.
-- Sysmon-to-Splunk event ingestion belongs to LAB-04.
-- Atomic Red Team simulations will be reviewed individually before execution.
-- Wazuh agent deployment and log collection will be verified during WAZ-01.
-- Sigma conversion and validation will be implemented during detection development.
-- Vendor platform support does not establish successful installation or integration.
+## Planned component placement
 
-#### Official References
+| Component | Proposed host | Guest OS / architecture | Resources | Status |
+|---|---|---|---|---|
+| Development, Git, and documentation | Chris's Mac | Host macOS | Not applicable | Planned |
+| Windows detection endpoint | Laura's ThinkPad | Windows Server 2022 Standard Evaluation (Desktop Experience), x64 | 2 logical processors. Initially about 2 GiB observed in the guest. Laura subsequently configured 8 GB (8192 MB) in VMware. Laura reports an 80 GB virtual disk. | Running. Selected as the detection endpoint. Tool compatibility and telemetry verification pending. |
+| Splunk collection and search | Laura's ThinkPad | Supported x86-64 Linux VM; exact distribution/version pending | Proposed: 4 vCPU, 12 GiB RAM, 120 GiB dynamically allocated disk | Proposed allocation; verify selected Splunk release support |
+| Wazuh server, indexer, and dashboard | Laura's ThinkPad | Supported x86-64 Linux VM | Proposed: 4 vCPU, 8 GiB RAM, 100 GiB dynamically allocated disk | Later phase; run within measured host capacity after the three-detection baseline |
+| Linux monitoring endpoint | Laura's ThinkPad | Linux x86-64 VM; distribution/version pending | Proposed: 2 vCPU, 4 GiB RAM, 40 GiB dynamically allocated disk | Later phase |
+| Isolated analysis environment | Laura's ThinkPad | Windows x86-64 disposable VM | Resources pending; run separately from collector VMs when practical | Later phase; isolated from detection infrastructure |
 
-- Sysmon: https://learn.microsoft.com/en-us/sysinternals/downloads/sysmon
-- Atomic Red Team: https://github.com/redcanaryco/atomic-red-team
-- Splunk Documentation: https://help.splunk.com/
-- Wazuh Documentation: https://documentation.wazuh.com/
-- Sigma CLI: https://github.com/SigmaHQ/sigma-cli
+VM hosting does not determine issue ownership. Both collaborators must be able to reproduce the agreed detection workflow through an authorized access method.
 
----
+## Initial implementation sequence
 
-### 8. Snapshot and Recovery Validation
+1. Confirm both hosts' CPU, RAM, free storage, operating systems, and virtualization software.
+2. Choose the Windows VM configuration and supported Splunk deployment path.
+3. Build the Windows endpoint with a local lab account and test clean-snapshot recovery.
+4. Install and configure Sysmon; verify a harmless process creation event locally.
+5. Establish Sysmon-to-Splunk collection and locate the same event by host, timestamp, and process.
+6. Save sanitized configuration and evidence for peer review.
 
-#### Baseline Snapshot
+The first telemetry gate is passed only when both collaborators can find a fresh Sysmon Event ID 1 in Splunk. Wazuh follows the three-technique Splunk baseline; the analysis environment is a separate later phase.
 
-| Field | Result |
+## Compatibility and resource decisions
+
+- Chris's M1 Mac is reserved for development, Git, documentation, and browser-based access. Its 8 GiB RAM and 11 GiB available storage do not support the planned local VM lab.
+- Verify the selected Splunk release supports its actual host OS and CPU. Use a separate supported host if needed.
+- The ThinkPad has sufficient preliminary capacity for the Windows endpoint and a separate Splunk VM. Proposed allocations remain subject to observed host and guest performance.
+- Record actual VM allocations, event retention, and disk limits after the deployment choices are made.
+- Record licensing or evaluation terms and expiration dates without committing keys or credentials.
+- Confirm snapshot support in the selected virtualization product and test recovery before simulations.
+
+## Networking and access
+
+| Decision | Value |
 |---|---|
-| Snapshot Name | LAB-01 Clean Baseline |
-| Snapshot Platform | VMware Workstation Pro |
-| Guest OS | Windows Server 2022 |
-| VMware Tools | Installed |
-| Snapshot Created | Yes |
-| Recovery Test Performed | Yes |
-| Recovery Test Result | Passed |
-| Snapshot Creation Date | Pending verification |
+| Detection-lab virtual network mode | Windows detection VM uses NAT. Collector networking and access from Chris's Mac are pending. |
+| Windows-to-Splunk collection method | Pending |
+| Private collector address and required ports | Pending |
+| Authorized access method for Chris | Pending |
+| Firewall scope | Pending; restrict access to the agreed lab systems |
+| Clock synchronization method | Pending; record test times in UTC |
+| Internet access during setup | Pending; document required downloads |
+| Analysis network | Separate disposable environment; not connected to normal collectors |
 
-A clean baseline snapshot was created after operating system installation and before deployment of the TraceFoundry detection tools.
+Keep collector interfaces private. Store credentials outside Git. Verify connectivity and clock alignment before interpreting missing events or detection latency.
 
-The VM's RAM allocation was subsequently increased from 2 GB to 8 GB.
+For later dynamic analysis, verify disabled internet egress, bridged networking, shared folders, clipboard, drag-and-drop, USB passthrough, and cloud sync. Test rollback and use a controlled export process for sanitized evidence after execution has stopped and the sample environment has been shut down or reverted.
 
-A new baseline snapshot reflecting the final hardware configuration is recommended before beginning LAB-02.
+## Installed versions and configuration record
 
-#### Recovery Test Procedure
+Confirmed versions are listed below. Pending entries still require verification.
 
-1. Created a clean baseline snapshot in VMware Workstation.
-2. Powered on the Windows Server 2022 virtual machine.
-3. Logged into the guest operating system.
-4. Created a temporary desktop file named `snapshot-test.txt`.
-5. Shut down the guest operating system.
-6. Opened VMware Snapshot Manager.
-7. Selected `LAB-01 Clean Baseline`.
-8. Restored the selected snapshot.
-9. Powered on Windows Server and logged in.
-10. Verified that the temporary test file no longer existed.
+| Item | Version / build | Configuration or evidence |
+|---|---|---|
+| Virtualization product | VMware Workstation Pro 17.6.3 | Reported by Laura |
+| Windows guest | Windows Server 2022 Standard Evaluation (Desktop Experience), x64 | Edition and architecture confirmed in guest inventory. Exact OS build pending. |
+| Sysmon | Pending | Configuration path and SHA-256 pending |
+| Splunk and collection component | Pending | Index, sourcetype, field mappings, and retention pending |
+| Atomic Red Team | Pending | Selected test ID and revision pending |
+| Sigma CLI, Splunk backend, and pipeline | Pending | Pinned versions and mapping configuration pending |
+| Wazuh components and agents | Pending | Later phase |
+| Linux guest | Pending | Later phase |
+| Ghidra and required runtime | Pending | Later phase |
+| C++ compiler / build tools | Pending | Later phase |
 
-#### Verification Command
+## Snapshot and recovery record
 
-```powershell
-Test-Path "$env:USERPROFILE\Desktop\snapshot-test.txt"
-```
+| Checkpoint | VM | Snapshot identifier | Recovery tested | Evidence |
+|---|---|---|---|---|
+| Clean Windows baseline | Windows Server 2022 detection VM | LAB-01 Clean Baseline | Laura reports a successful restore | Chris accepted the recovery evidence in issue #1 |
+| Working telemetry baseline | Pending | Pending | Not tested | Pending |
+| Isolated analysis baseline | Pending | Pending | Not tested | Later phase |
 
-#### Observed Result
+## Session checklist
 
-```text
-False
-```
+- [x] Confirm host specifications and firmware virtualization support.
+- [x] Confirm VMware installation and version.
+- [ ] Agree on VM allocations and Splunk placement.
+- [ ] Document network mode and authorized access.
+- [x] Create Windows VM and verify clean-snapshot recovery.
+- [ ] Confirm a harmless Sysmon Event ID 1 locally.
+- [ ] Find the corresponding event in Splunk.
+- [ ] Have both collaborators reproduce the search.
+- [ ] Commit sanitized configuration and evidence through a reviewed PR.
 
-**Recovery Test Status: PASSED**
+## Ownership and review
 
-The result confirms that the temporary test file created after the baseline snapshot was absent following restoration.
+| Responsibility | Lead | Reviewer |
+|---|---|---|
+| Environment and architecture record — DOC-01 / #11 | Chris | Laura |
+| Windows VM — LAB-01 / #1 | Laura | Chris |
+| Sysmon configuration — LAB-02 / #2 | Laura | Chris |
+| Splunk installation — LAB-03 / #3 | Laura | Chris |
+| Sysmon-to-Splunk ingestion — LAB-04 / #4 | Chris | Laura |
 
-Windows Server remained accessible after recovery.
+Assignments follow the proposed session split and should be confirmed together. Update this file when a deployment decision changes; mark an item verified only after its evidence has been reviewed.
 
-#### Recovery Limitations
+## Observed Windows guest
 
-- Restoring a snapshot discards changes made after the selected recovery point.
-- Snapshots are not substitutes for full VM backups.
-- Snapshots may preserve earlier virtual hardware configurations.
-- Environment settings should be revalidated after significant configuration changes.
-- A clean recovery point should be maintained before executing security simulations.
+Laura booted Windows Server 2022 Standard Evaluation (64-bit) in VMware.
+The guest reported 2 logical processors and approximately 2 GiB of RAM.
+Its C: volume reported 79.37 GB total and 67.51 GB free.
 
----
+Chris and Laura selected this Windows Server 2022 VM as the detection endpoint.
+Laura reports a successful restore from the LAB-01 Clean Baseline snapshot.
 
-### 9. Safety and Authorization Boundaries
+[Guest inventory screenshot](screenshots/windows-server-2022-inventory.png)
 
-The TraceFoundry Windows endpoint is a disposable environment intended for authorized security engineering exercises.
-
-The following boundaries apply:
-
-- Use only owned or explicitly authorized systems.
-- Do not use production credentials or sensitive organizational information.
-- Do not connect unauthorized systems to the lab.
-- Review simulation commands, prerequisites, and cleanup procedures before execution.
-- Record test outcomes and unexpected behavior.
-- Maintain clean recovery snapshots.
-- Do not modify the host operating system unnecessarily.
-- Keep the malware-analysis environment separate from the detection lab.
-- Do not upload real malware, secrets, credentials, or sensitive raw logs to GitHub.
-- Export only reviewed and sanitized evidence.
-
-The detection environment and isolated malware-analysis environment will remain separate.
-
----
-
-### 10. Resource Planning
-
-The Windows Server 2022 detection endpoint is currently configured with:
-
-- Virtual CPUs: 2
-- Allocated RAM: 8 GB (8192 MB)
-- Virtual Disk: 80 GB
-- Network Mode: NAT
-
-The VM was initially configured with 2 GB of RAM and subsequently increased to 8 GB to better support endpoint monitoring, telemetry collection, and security testing.
-
-Additional resources will be required for:
-
-- Splunk Enterprise and associated ingestion services
-- Wazuh server, indexer, and dashboard
-- Linux endpoint monitoring
-- Isolated malware-analysis virtual machines
-
-Collector services may be deployed on separate supported hosts or run in different sessions to reduce resource contention.
-
-Actual CPU, memory, and disk utilization will be monitored before deploying additional endpoints or increasing the number of concurrently running virtual machines.
-
-Disk consumption will also be monitored as security logs and telemetry accumulate. Event retention and storage limits will be configured as necessary to avoid exhausting available disk space.
-
-No formal performance benchmarks have been completed at this stage.
-
----
-
-### 11. Pending Verification
-
-The following items remain open:
-
-- [ ] Confirm host Windows edition and build
-- [ ] Confirm installed physical RAM
-- [ ] Record total NVMe SSD capacity
-- [ ] Record available host disk space
-- [x] Confirm final guest RAM allocation: 8 GB
-- [ ] Verify exact guest operating system build and architecture using CIM
-- [ ] Record selected tool versions and remaining compatibility decisions
-- [ ] Record snapshot creation date
-- [ ] Create and verify a final baseline snapshot after RAM allocation change
-- [ ] Attach or reference sanitized snapshot evidence
-- [ ] Obtain partner review
-
----
-
-### 12. Partner Review
-
-| Field | Status |
-|---|---|
-| Related Issue | LAB-01 (#1) |
-| Environment Owner | Project partner |
-| Reviewer | Chris |
-| Review Status | Pending |
-| Snapshot Verification | Passed |
-| Documentation Status | Draft / In Progress |
-| Approval Date | Pending |
-
-#### Review Criteria
-
-The reviewer should confirm:
-
-1. The Windows VM boots and operates normally.
-2. Host and guest specifications are accurately documented.
-3. Operating system licensing is recorded.
-4. Network mode and safety boundaries are understood.
-5. Required tool compatibility has been evaluated.
-6. A clean recovery snapshot exists.
-7. Snapshot restoration was successfully tested.
-8. Evidence supports the reported results.
-9. Remaining limitations are documented.
-
-LAB-01 will be considered complete after the required environment information, recovery evidence, and partner review have been verified.
-
----
-
-### 13. Next Implementation Steps
-
-After LAB-01 is completed and reviewed:
-
-#### LAB-02 — Sysmon Configuration
-
-- Select and document a Sysmon configuration.
-- Install Sysmon on the Windows endpoint.
-- Generate harmless process activity.
-- Verify Event ID 1 in the local Windows Event Log.
-- Document event coverage and configuration hash.
-
-#### LAB-03 — Splunk Installation
-
-- Select a supported deployment host.
-- Install and configure Splunk.
-- Record version, resource requirements, and configuration.
-
-#### LAB-04 — Sysmon to Splunk Ingestion
-
-- Establish event forwarding.
-- Confirm fresh Sysmon events in Splunk.
-- Validate timestamps, source fields, and host attribution.
-- Have both collaborators reproduce the results.
-
-The project will proceed to detection engineering only after the required telemetry collection path is functional and reproducible.
+The original baseline passed recovery testing. A baseline for the 8 GB configuration still needs to be created and tested. See the [LAB-01 endpoint report](lab-01-windows-endpoint.md).
