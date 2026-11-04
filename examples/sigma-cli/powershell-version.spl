@@ -1,1 +1,1 @@
-Image="*\\powershell.exe" CommandLine="*$PSVersionTable*"
+deliberately incorrect SPL
