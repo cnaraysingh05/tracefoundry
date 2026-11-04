@@ -1,6 +1,6 @@
 # TraceFoundry Environment
 
-Status: Planning — lab deployment and compatibility are not yet verified.
+Status: The Windows detection VM is running. Laura tested clean-snapshot recovery. Chris reviewed LAB-01 in issue #1. Telemetry verification is pending.
 
 This document records the host hardware, planned lab placement, and setup decisions for TraceFoundry. Pending entries must be confirmed before installation. Planning allocations are not vendor requirements or verified capacity.
 
@@ -14,7 +14,7 @@ This document records the host hardware, planned lab placement, and setup decisi
 | Installed RAM | 8 GiB | 59,749,613,568 bytes (about 55.6 GiB usable) |
 | Available disk space | 11 GiB on the data volume at time of inventory | 850,728,255,488 bytes (about 792.3 GiB) on `C:` |
 | Host OS and version | macOS 26.6.2 | Windows 11 Pro, version 10.0.26200, 64-bit |
-| Virtualization software and version | Pending | VMware previously reported; installation after reset and exact product/version pending |
+| Virtualization software and version | No virtualization app found in the checked location | VMware Workstation Pro 17.6.3 |
 | Starting condition | Personal development workstation | Reported factory-reset machine |
 | Virtualization readiness | No virtualization app detected; insufficient current free space for the planned lab | Firmware virtualization enabled |
 
@@ -25,7 +25,7 @@ Do not include serial numbers, credentials, product keys, or personal account de
 | Component | Proposed host | Guest OS / architecture | Resources | Status |
 |---|---|---|---|---|
 | Development, Git, and documentation | Chris's Mac | Host macOS | Not applicable | Planned |
-| Windows detection endpoint | Laura's ThinkPad | Windows 11 Pro x86-64 VM | Proposed: 4 vCPU, 8 GiB RAM, 100 GiB dynamically allocated disk | Proposed allocation; validate after installation |
+| Windows detection endpoint | Laura's ThinkPad | Windows Server 2022 Standard Evaluation (Desktop Experience), x64 | 2 logical processors. Initially about 2 GiB observed in the guest. Laura subsequently configured 8 GB (8192 MB) in VMware. Laura reports an 80 GB virtual disk. | Running. Selected as the detection endpoint. Tool compatibility and telemetry verification pending. |
 | Splunk collection and search | Laura's ThinkPad | Supported x86-64 Linux VM; exact distribution/version pending | Proposed: 4 vCPU, 12 GiB RAM, 120 GiB dynamically allocated disk | Proposed allocation; verify selected Splunk release support |
 | Wazuh server, indexer, and dashboard | Laura's ThinkPad | Supported x86-64 Linux VM | Proposed: 4 vCPU, 8 GiB RAM, 100 GiB dynamically allocated disk | Later phase; run within measured host capacity after the three-detection baseline |
 | Linux monitoring endpoint | Laura's ThinkPad | Linux x86-64 VM; distribution/version pending | Proposed: 2 vCPU, 4 GiB RAM, 40 GiB dynamically allocated disk | Later phase |
@@ -57,7 +57,7 @@ The first telemetry gate is passed only when both collaborators can find a fresh
 
 | Decision | Value |
 |---|---|
-| Detection-lab virtual network mode | Pending |
+| Detection-lab virtual network mode | Windows detection VM uses NAT. Collector networking and access from Chris's Mac are pending. |
 | Windows-to-Splunk collection method | Pending |
 | Private collector address and required ports | Pending |
 | Authorized access method for Chris | Pending |
@@ -72,12 +72,12 @@ For later dynamic analysis, verify disabled internet egress, bridged networking,
 
 ## Installed versions and configuration record
 
-These entries are pending verification; this table does not indicate installation.
+Confirmed versions are listed below. Pending entries still require verification.
 
 | Item | Version / build | Configuration or evidence |
 |---|---|---|
-| Virtualization product | Pending | Pending |
-| Windows guest | Pending | Pending |
+| Virtualization product | VMware Workstation Pro 17.6.3 | Reported by Laura |
+| Windows guest | Windows Server 2022 Standard Evaluation (Desktop Experience), x64 | Edition and architecture confirmed in guest inventory. Exact OS build pending. |
 | Sysmon | Pending | Configuration path and SHA-256 pending |
 | Splunk and collection component | Pending | Index, sourcetype, field mappings, and retention pending |
 | Atomic Red Team | Pending | Selected test ID and revision pending |
@@ -91,17 +91,17 @@ These entries are pending verification; this table does not indicate installatio
 
 | Checkpoint | VM | Snapshot identifier | Recovery tested | Evidence |
 |---|---|---|---|---|
-| Clean Windows baseline | Pending | Pending | Not tested | Pending |
+| Clean Windows baseline | Windows Server 2022 detection VM | LAB-01 Clean Baseline | Laura reports a successful restore | Chris accepted the recovery evidence in issue #1 |
 | Working telemetry baseline | Pending | Pending | Not tested | Pending |
 | Isolated analysis baseline | Pending | Pending | Not tested | Later phase |
 
 ## Session checklist
 
 - [x] Confirm host specifications and firmware virtualization support.
-- [ ] Confirm VMware installation and version.
+- [x] Confirm VMware installation and version.
 - [ ] Agree on VM allocations and Splunk placement.
 - [ ] Document network mode and authorized access.
-- [ ] Create Windows VM and verify clean-snapshot recovery.
+- [x] Create Windows VM and verify clean-snapshot recovery.
 - [ ] Confirm a harmless Sysmon Event ID 1 locally.
 - [ ] Find the corresponding event in Splunk.
 - [ ] Have both collaborators reproduce the search.
@@ -118,3 +118,16 @@ These entries are pending verification; this table does not indicate installatio
 | Sysmon-to-Splunk ingestion — LAB-04 / #4 | Chris | Laura |
 
 Assignments follow the proposed session split and should be confirmed together. Update this file when a deployment decision changes; mark an item verified only after its evidence has been reviewed.
+
+## Observed Windows guest
+
+Laura booted Windows Server 2022 Standard Evaluation (64-bit) in VMware.
+The guest reported 2 logical processors and approximately 2 GiB of RAM.
+Its C: volume reported 79.37 GB total and 67.51 GB free.
+
+Chris and Laura selected this Windows Server 2022 VM as the detection endpoint.
+Laura reports a successful restore from the LAB-01 Clean Baseline snapshot.
+
+[Guest inventory screenshot](screenshots/windows-server-2022-inventory.png)
+
+The original baseline passed recovery testing. A baseline for the 8 GB configuration still needs to be created and tested. See the [LAB-01 endpoint report](lab-01-windows-endpoint.md).
