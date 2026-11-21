@@ -133,7 +133,12 @@ Command:
 Get-FileHash .\sysmonconfiguration.xml -Algorithm SHA256
 ```
 
-SHA-256 Hash: F4CC54128674A5844B23E6B602253F3EC36232F2AC3D8457CCF4F52E25CAC3B3
+SHA-256 Hash: ACB219B0ADB7E455F7A0D1DBC22351FA65E3BDC2C3590BA01F9706CDDC97CD6B
+Verification status:
+- Corrected repository XML downloaded and successfully parsed with xmllint on Chris's Mac.
+- SHA-256 above identifies the corrected repository file.
+- Applying this exact file to the Windows VM and verifying the active Sysmon configuration remain pending.
+- Previously reported installation and Notepad results predate this correction and do not validate the corrected file.
 
 The recorded hash must match the exact XML committed
 to this repository.
