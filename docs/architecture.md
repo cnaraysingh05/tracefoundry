@@ -9,6 +9,8 @@ Laura’s ThinkPad hosts the planned lab VMs in VMware. Chris’s M1 Mac is the 
 
 The first milestone is to follow one Windows process from execution on the endpoint to a searchable event in Splunk. After the three Windows detections are tested in Splunk, Wazuh will collect the same endpoint activity independently so Chris and Laura can compare results.
 
+The diagram shows the intended collection path. Its arrows do not indicate verified connectivity or successful ingestion.
+
 ```mermaid
 flowchart TD
     W["Windows Server 2022 test VM"] --> S["Sysmon Operational log"]
