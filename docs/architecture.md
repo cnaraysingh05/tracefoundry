@@ -1,6 +1,9 @@
 # TraceFoundry lab architecture
 
-**Status:** Windows endpoint running. Laura reports successful Sysmon installation and a local process-creation event; verification of the corrected repository configuration is pending. The Ubuntu collector VM is running, and Splunk installation is in progress. Windows forwarding, Splunk ingestion, and private access from Chris's Mac remain unverified.**Owner:** Chris  
+**Status:** Windows endpoint running. Laura reports successful Sysmon installation and a local process-creation event; verification of the corrected repository configuration is pending. The Ubuntu collector VM is running, and Splunk installation is in progress. Windows forwarding, Splunk ingestion, and private access from Chris's Mac remain unverified.
+
+**Owner:** Chris
+
 **Reviewer:** Laura
 
 Laura’s ThinkPad hosts the planned lab VMs in VMware. Chris’s M1 Mac is the workstation for Git, documentation, and Splunk searches. Host specifications, proposed VM allocations, tool versions, and recovery checkpoints are tracked in the [environment record](environment.md).
